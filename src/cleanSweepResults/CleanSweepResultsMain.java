@@ -91,29 +91,29 @@ public class CleanSweepResultsMain {
 			Iterator iter = sweepResultSet.iterator();
 
 			CmJobSweepResult sweepResult;
-			PropertyFilter pf = new PropertyFilter();
-			pf.addIncludeType(0, null, Boolean.TRUE, FilteredPropertyType.ANY, null);
-			com.filenet.api.property.Properties props;
-			String ID;
+			//PropertyFilter pf = new PropertyFilter();
+			//pf.addIncludeType(0, null, Boolean.TRUE, FilteredPropertyType.ANY, null);
+			//com.filenet.api.property.Properties props;
+			//String ID;
 			
 			// 	Iterate sweep result items // and delete Sweep Reults objects.
 			while (iter.hasNext())
 			{
 				sweepResult = (CmJobSweepResult) iter.next();
 				// Return document properties.
-				sweepResult.fetchProperties(pf);
-				props = sweepResult.getProperties();
-				ID = props.getIdValue("ID").toString();
+				//sweepResult.fetchProperties(pf);
+				//props = sweepResult.getProperties();
+				//ID = props.getIdValue("ID").toString();
 				//System.out.println(ID);
 
 				if (sweepResult.get_ClassDescription().get_SymbolicName().equals(ClassNames.CM_JOB_SWEEP_RESULT))
 				{
 					sweepResult.delete();
 					rowCount++;
-					System.out.print(rowCount + " : " + ID);
+					//System.out.print(rowCount + " : " + ID);
+					System.out.print(rowCount + " : ");
 					sweepResult.save(RefreshMode.NO_REFRESH);
 					System.out.printf(" ..... deleted!\n");
-					
 				}
 			}
 		}
