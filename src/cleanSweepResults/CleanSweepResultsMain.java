@@ -4,19 +4,12 @@ import java.util.*;
 import java.lang.System;
 import com.filenet.api.exception.EngineRuntimeException;
 import com.filenet.api.exception.ExceptionCode;
-import com.filenet.api.property.FilterElement;
-import com.filenet.api.property.PropertyFilter;
 import com.filenet.api.core.ObjectStore;
 import com.filenet.api.core.UpdatingBatch;
-import com.filenet.api.replication.ReplicationJournalEntry;
 import com.filenet.api.sweep.CmJobSweepResult;
 import com.filenet.api.collection.CmJobSweepResultSet;
-import com.filenet.api.collection.IndependentObjectSet;
 
 import com.filenet.api.query.SearchSQL;
-import com.filenet.api.constants.ClassNames;
-import com.filenet.api.constants.FilteredPropertyType;
-import com.filenet.api.collection.RepositoryRowSet;
 import com.filenet.api.query.SearchScope;
 import com.filenet.api.constants.RefreshMode;
 import java.text.SimpleDateFormat;
@@ -30,7 +23,6 @@ public class CleanSweepResultsMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("Start - main.");
 		
 		//String sqlString = "select this from CmSweepResult OPTIONS (COUNT_LIMIT 10000000)";	
 		String sqlString = "select this from CmSweepResult";
@@ -53,7 +45,8 @@ public class CleanSweepResultsMain {
 		long startTime = 0;
 		long endTime = 0;
 		long testTime = 0;
-		RepositoryRowSet rowSet = null;
+		long startBatchTime = 0;
+		long endBatchTime = 0;
 
 		try
         {
@@ -72,8 +65,6 @@ public class CleanSweepResultsMain {
 		
 		// Get all items in the sweep result.
 		CmJobSweepResultSet sweepResultSet = (CmJobSweepResultSet)searchScope.fetchObjects(sqlObject, new Integer(1), null, Boolean.TRUE);
-		//System.out.println(sweepResultSet.pageIterator().getTotalCount());
-		
 
 		System.out.print("\n\n\tWould you like to delete Sweep Result objects? (Y/N) ... ");
 
@@ -85,9 +76,22 @@ public class CleanSweepResultsMain {
 			System.exit(0);
 		}
 		
-		System.out.println("\n\tDeleting ...\n");		
+		System.out.print("\n\n\tEnter batch size: ... ");
+
+		String batchSizeStr = System.console().readLine();
+
+		if(batchSizeStr.isEmpty() || !batchSizeStr.matches("-?\\d+(\\.\\d+)?"))
+		{
+			System.out.println("\n\tExiting, wrong number ...\n");
+			System.exit(0);
+		}
 		
-		int rowCount = 0, docCount = 0;
+		System.out.println("\n\tDeleting ...");		
+		
+		int rowCount = 0, sweepResultCount = 0;
+		int  batchSize = Integer.parseInt(batchSizeStr);
+		System.out.println("\n\tBatch size ... " + batchSize);
+		
 		if(!(sweepResultSet.isEmpty())){
 			Iterator iter = sweepResultSet.iterator();
 
@@ -98,21 +102,28 @@ public class CleanSweepResultsMain {
 			//String ID;
 			
 			// 	Iterate sweep result items // and delete Sweep Reults objects.
+			String anim= "|/-\\";
 			while (iter.hasNext())
 			{
 				rowCount++;
+
 				// Work with batches
+				startBatchTime = System.currentTimeMillis();
 				UpdatingBatch ub = UpdatingBatch.createUpdatingBatchInstance(os1.get_Domain(), RefreshMode.NO_REFRESH);
-				for (int batchSize = 0; batchSize < 1000 && iter.hasNext(); batchSize++)
+
+				for (int i = 0; i < batchSize && iter.hasNext(); i++)
 				{
-				docCount++;
+				System.out.printf("\r " + rowCount + " Batch " + anim.charAt(i % anim.length()));
+
+				sweepResultCount++;
 				sweepResult = (CmJobSweepResult) iter.next();
-				// Return document properties.
+
 				//sweepResult.fetchProperties(pf);
 				//props = sweepResult.getProperties();
 				//ID = props.getIdValue("ID").toString();
 				//System.out.println(ID);
 /*
+				// No batches processing
 				//if (sweepResult.get_ClassDescription().get_SymbolicName().equals(ClassNames.CM_JOB_SWEEP_RESULT))
 				//{
 					sweepResult.delete();
@@ -127,9 +138,9 @@ public class CleanSweepResultsMain {
 					sweepResult.delete();
 					ub.add(sweepResult, null);
 				}
-				System.out.print("Batch " + rowCount);
 				ub.updateBatch();
-				System.out.printf(" ..... done!\t Total deleted docs: " + docCount + "\n");
+				endBatchTime = System.currentTimeMillis();
+				System.out.printf("\r " + rowCount + " Batch   ..... done!\t Total deleted sweepResults: " + sweepResultCount + "\t Time: " + (endBatchTime - startBatchTime) + " ms\n");
 			}
 		}
 		
