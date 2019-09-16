@@ -1,0 +1,6 @@
+20:09:17.795 com.ibm.rmi.iiop.Connection getCallStream:2506 P=691603:O=0:CT ORBRas[default]  org.omg.CORBA.COMM_FAILURE: purge_calls:2129 Reason: CONN_ABORT (1), State: ABORT (5)  vmcid: IBM  minor code: 306 completed: Maybe
+	at com.ibm.rmi.iiop.Connection.purge_calls(Connection.java:2128)
+	at com.ibm.rmi.iiop.Connection.doReaderWorkOnce(Connection.java:3388)
+	at com.ibm.rmi.transport.ReaderThread.run(ReaderPoolImpl.java:129)
+
+20:09:17.795 com.ibm.rmi.corba.ClientDelegate invoke:698 P=691603:O=0:CT ORBRas[default] Received SystemException org.omg.CORBA.COMM_FAILURE: purge_calls:2129 Reason: CONN_ABORT (1), State: ABORT (5)  vmcid: IBM  minor code: 306 completed: Maybe 

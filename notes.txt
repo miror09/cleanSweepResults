@@ -1,0 +1,1 @@
+d:\eclipse\eclipse-workspace\cleanSweepResults>d:\eclipse\eclipse-workspace\cleanSweepResults\jre\bin\java.exe -Dcom.ibm.CORBA.ConfigURL="file:d:\eclipse\eclipse-workspace\cleanSweepResults\sas.client.props" -jar cleanSweepResults.jar

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/cleanSweepResults"/>
+	<classpathentry kind="lib" path="D:/eclipse/configuration/org.eclipse.osgi/1000/0/.cp/dist/methodrunner.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/com.ecmdeveloper.plugin.scripting_2.0.0/dist/com.ecmdeveloper.scripting_1.0.0.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/eclipse-workspace/cleanSweepResults/Jace.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/com.ecmdeveloper.plugin.lib_2.1.0/lib/stax-api.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/com.ecmdeveloper.plugin.lib_2.1.0/lib/xlxpScanner.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/com.ecmdeveloper.plugin.lib_2.1.0/lib/xlxpScannerUtils.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/plugins/com.ecmdeveloper.plugin.lib_2.1.0/lib/log4j.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="D:/eclipse/eclipse-workspace/cleanSweepResults/com.ibm.ws.ejb.thinclient_8.5.0.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/eclipse-workspace/cleanSweepResults/com.ibm.ws.orb_8.5.0.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/eclipse-workspace/cleanSweepResults/com.ibm.ws.admin.client_8.5.0.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/eclipse-workspace/cleanSweepResults/ibmkeycert.jar"/>
+	<classpathentry kind="lib" path="D:/eclipse/eclipse-workspace/cleanSweepResults/ibmpkcs.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
