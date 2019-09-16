@@ -106,15 +106,15 @@ public class CleanSweepResultsMain {
 				//ID = props.getIdValue("ID").toString();
 				//System.out.println(ID);
 
-				if (sweepResult.get_ClassDescription().get_SymbolicName().equals(ClassNames.CM_JOB_SWEEP_RESULT))
-				{
+				//if (sweepResult.get_ClassDescription().get_SymbolicName().equals(ClassNames.CM_JOB_SWEEP_RESULT))
+				//{
 					sweepResult.delete();
 					rowCount++;
 					//System.out.print(rowCount + " : " + ID);
 					System.out.print(rowCount + " : ");
 					sweepResult.save(RefreshMode.NO_REFRESH);
 					System.out.printf(" ..... deleted!\n");
-				}
+				//}
 			}
 		}
 		
