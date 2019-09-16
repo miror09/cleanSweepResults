@@ -7,6 +7,7 @@ import com.filenet.api.exception.ExceptionCode;
 import com.filenet.api.property.FilterElement;
 import com.filenet.api.property.PropertyFilter;
 import com.filenet.api.core.ObjectStore;
+import com.filenet.api.core.UpdatingBatch;
 import com.filenet.api.replication.ReplicationJournalEntry;
 import com.filenet.api.sweep.CmJobSweepResult;
 import com.filenet.api.collection.CmJobSweepResultSet;
@@ -86,7 +87,7 @@ public class CleanSweepResultsMain {
 		
 		System.out.println("\n\tDeleting ...\n");		
 		
-		int rowCount = 0;
+		int rowCount = 0, docCount = 0;
 		if(!(sweepResultSet.isEmpty())){
 			Iterator iter = sweepResultSet.iterator();
 
@@ -99,13 +100,19 @@ public class CleanSweepResultsMain {
 			// 	Iterate sweep result items // and delete Sweep Reults objects.
 			while (iter.hasNext())
 			{
+				rowCount++;
+				// Work with batches
+				UpdatingBatch ub = UpdatingBatch.createUpdatingBatchInstance(os1.get_Domain(), RefreshMode.NO_REFRESH);
+				for (int batchSize = 0; batchSize < 1000 && iter.hasNext(); batchSize++)
+				{
+				docCount++;
 				sweepResult = (CmJobSweepResult) iter.next();
 				// Return document properties.
 				//sweepResult.fetchProperties(pf);
 				//props = sweepResult.getProperties();
 				//ID = props.getIdValue("ID").toString();
 				//System.out.println(ID);
-
+/*
 				//if (sweepResult.get_ClassDescription().get_SymbolicName().equals(ClassNames.CM_JOB_SWEEP_RESULT))
 				//{
 					sweepResult.delete();
@@ -115,6 +122,14 @@ public class CleanSweepResultsMain {
 					sweepResult.save(RefreshMode.NO_REFRESH);
 					System.out.printf(" ..... deleted!\n");
 				//}
+*/
+					sweepResult.setUpdateSequenceNumber(null);
+					sweepResult.delete();
+					ub.add(sweepResult, null);
+				}
+				System.out.print("Batch " + rowCount);
+				ub.updateBatch();
+				System.out.printf(" ..... done!\t Total deleted docs: " + docCount + "\n");
 			}
 		}
 		
