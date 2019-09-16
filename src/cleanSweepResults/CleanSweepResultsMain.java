@@ -113,7 +113,7 @@ public class CleanSweepResultsMain {
 
 				for (int i = 0; i < batchSize && iter.hasNext(); i++)
 				{
-				System.out.printf("\r " + rowCount + " Batch " + anim.charAt(i % anim.length()));
+				System.out.printf("\r " + rowCount + ". Batch " + anim.charAt(i % anim.length()));
 
 				sweepResultCount++;
 				sweepResult = (CmJobSweepResult) iter.next();
@@ -140,7 +140,7 @@ public class CleanSweepResultsMain {
 				}
 				ub.updateBatch();
 				endBatchTime = System.currentTimeMillis();
-				System.out.printf("\r " + rowCount + " Batch   ..... done!\t Total deleted sweepResults: " + sweepResultCount + "\t Time: " + (endBatchTime - startBatchTime) + " ms\n");
+				System.out.printf("\r " + rowCount + ". Batch   ..... done!  Total deleted sweepResults: " + sweepResultCount + "\t Time: " + (endBatchTime - startBatchTime) + " ms\n");
 			}
 		}
 		
