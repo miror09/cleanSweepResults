@@ -12,6 +12,8 @@ import com.filenet.api.collection.CmJobSweepResultSet;
 import com.filenet.api.query.SearchSQL;
 import com.filenet.api.query.SearchScope;
 import com.filenet.api.constants.RefreshMode;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
@@ -64,7 +66,7 @@ public class CleanSweepResultsMain {
 		SearchScope searchScope = new SearchScope(os1);
 		
 		// Get all items in the sweep result.
-		CmJobSweepResultSet sweepResultSet = (CmJobSweepResultSet)searchScope.fetchObjects(sqlObject, new Integer(1), null, Boolean.TRUE);
+		CmJobSweepResultSet sweepResultSet = (CmJobSweepResultSet)searchScope.fetchObjects(sqlObject, new Integer(100), null, Boolean.TRUE);
 
 		System.out.print("\n\n\tWould you like to delete Sweep Result objects? (Y/N) ... ");
 
@@ -101,6 +103,11 @@ public class CleanSweepResultsMain {
 			//com.filenet.api.property.Properties props;
 			//String ID;
 			
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			//get current date time with Date()
+			Date date;
+			//System.out.println(dateFormat.format(date));
+			
 			// 	Iterate sweep result items // and delete Sweep Reults objects.
 			String anim= "|/-\\";
 			while (iter.hasNext())
@@ -110,10 +117,10 @@ public class CleanSweepResultsMain {
 				// Work with batches
 				startBatchTime = System.currentTimeMillis();
 				UpdatingBatch ub = UpdatingBatch.createUpdatingBatchInstance(os1.get_Domain(), RefreshMode.NO_REFRESH);
-
+				date = new Date();
 				for (int i = 0; i < batchSize && iter.hasNext(); i++)
 				{
-				System.out.printf("\r " + rowCount + ". Batch " + anim.charAt(i % anim.length()));
+				System.out.printf("\r " + dateFormat.format(date) + " - " + rowCount + ". Batch " + anim.charAt(i % anim.length()));
 
 				sweepResultCount++;
 				sweepResult = (CmJobSweepResult) iter.next();
@@ -140,12 +147,13 @@ public class CleanSweepResultsMain {
 				}
 				ub.updateBatch();
 				endBatchTime = System.currentTimeMillis();
-				System.out.printf("\r " + rowCount + ". Batch   ..... done!  Total deleted sweepResults: " + sweepResultCount + "\t Time: " + (endBatchTime - startBatchTime) + " ms\n");
+				date = new Date();
+				System.out.printf("\r " + dateFormat.format(date) + " - "+ rowCount + ". Batch   ..... done!  Total deleted sweepResults: " + sweepResultCount + "\t Time: " + (endBatchTime - startBatchTime) + " ms\n");
 			}
 		}
 		
 		endTime = System.currentTimeMillis();
-		System.out.println("\t\t\tTotal number of deleted records in Sweep result table: " + rowCount);
+		System.out.println("\t\t\tTotal number of deleted records in Sweep result table: " + sweepResultCount);
 		System.out.println("\t\t\tSearching time: " + (endTime - startTime) + " ms");
 
         }
